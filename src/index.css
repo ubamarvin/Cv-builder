@@ -1,0 +1,39 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0px;
+    height: 100vh;
+
+
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/*Header*/
+
+.header {
+    border: 2px solid black;
+    height: 46px;
+}
+
+
+/*Cv Builder*/
+
+.cv-builder-container {
+    display: flex;
+    flex-grow: 1;
+    border: 2px solid black;
+}
+
+/*Personal Info*/
+
+.personal-info {
+    
+}
