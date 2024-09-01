@@ -109,8 +109,19 @@ function ExperienceInfo({jobs, setJobs}) {
       return job.id === id ? { ...job, jobCompany: e.target.value} : job
     })
     setJobs(newJobs)
-
   }
+
+  // This is bad, leaves a null entry causing a nullpointer error
+  const handleDeleteJobCardClickDontUse = (id) => {
+    const newJobs = jobs.map((job) => {
+      return job.id === id ? null : job
+    })
+    setJobs(newJobs)
+  }
+  const handleDeleteJobCardClick = (id) => {
+    const newJobs = jobs.filter((job) => job.id !== id)
+    setJobs(newJobs)
+  } 
 
 
   const cards = jobs.map((job) => {
@@ -141,6 +152,11 @@ function ExperienceInfo({jobs, setJobs}) {
 
 
       </form>
+      <button
+      type='button'
+      onClick = {() => handleDeleteJobCardClick(job.id)}
+
+      >Delete</button>
     </div>
   )
   })
