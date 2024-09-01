@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { useState} from "react"
+import {v4 as uuidv4} from "uuid"
 
 import "./index.css";
 
@@ -20,7 +21,7 @@ function CvBuilderContainer() {
   const [fullNameText, setFullNameText] = useState("")
 
   //jobs? Array of obsjects?
-  const [jobs, setJobs] = useState([{jobTitle: "burger", jobCompany: "crustykrab"}])
+  const [jobs, setJobs] = useState([{id: uuidv4(), jobTitle: "burger", jobCompany: "crustykrab"}, {id: uuidv4(), jobTitle: "pizza", jobCompany : "PizzaHut"}])
 
   return (
     <div className="cv-builder-container">
@@ -96,41 +97,35 @@ function PersonalInfo({fullNameText, setFullNameText}) {
 // A button that appends another Experience Info
 // by adding a empty object to the jobs state
 function ExperienceInfo({jobs, setJobs}) {
-  const theForms = jobs.map((job) => {
+
+  const handleJobTitleChange = (id, e) => {
+    const newJobs = jobs.map((job) =>
+      job.id === id ? { ...job, jobTitle: e.target.value} : job)
+    setJobs(newJobs)
+  }
+  
+  const handleJobCompanyChange = (id, e) => {
+    const newJobs = jobs.map((job) => {
+      return job.id === id ? { ...job, jobCompany: e.target.value} : job
+    })
+    setJobs(newJobs)
+
+  }
+
+
+  const cards = jobs.map((job) => {
     return (
-    <ExperienceInfoForm
-    job={job}
-    setJobs={setJobs}
-
-    />
-  )
-  })
- 
-  //what about keys? 
-  return (
-    <div className='experience-info'>
-      <p>Work Experience</p>
- 
-      {theForms}
-      
-    </div>
-  )
-}
-
-
-//add delete button ( kicks itself off props passed list)
-function ExperienceInfoForm({job, setJobs}) {
-  const n = 1;
-  return (
-    <div className='experience-info-form'>
+      <div key={job.id} className='experience-info-form'>
       <form>
 
         <div>
           <label htmlFor='jobTitle{n}'>JobTitle</label>
           <input
            type='text'
-           id='jobTitle{n}'
+           id='jobTitle'
            value={job.jobTitle}
+           onChange = {(e) => handleJobTitleChange(job.id, e)}
+           
            />
         </div>
 
@@ -138,8 +133,9 @@ function ExperienceInfoForm({job, setJobs}) {
           <label htmlFor='JobCompany{n}'>JobCompany</label>
           <input
            type='text'
-           id='jobCompany{n}'
-           value={job.company}
+           id='jobCompany'
+           value={job.jobCompany}
+           onChange = {(e) => handleJobCompanyChange(job.id, e)}
            />
         </div>
 
@@ -147,7 +143,21 @@ function ExperienceInfoForm({job, setJobs}) {
       </form>
     </div>
   )
+  })
+ 
+  //what about keys? 
+  return (
+    <div className='experience-info'>
+      <p>Work Experience</p>
+      {cards}
+ 
+      
+      
+    </div>
+  )
 }
+
+
 
 
 function EducationInfo() {
@@ -161,20 +171,38 @@ function EducationInfo() {
 
 
 
-function CvPreview({fullNameText}) {
-
+function CvPreview({fullNameText, jobs}) {
+  
   return (
     <div className="cv-preview">
       <p>cv preview</p>
       <p>Your name is: <span>{fullNameText}</span></p>
+      <p>Work Experience:</p>
+      <WorkExperienceCard jobs={jobs}/>
+
       
     </div>
   )
 }
 
-function previewExperienceInfo({job}) {
-  // render this shit and return stuff
+function WorkExperienceCard({jobs}) {
+
+    const card = jobs.map((job)=> {
+      return (
+        <div key={job.id} className='work-experience-card'>
+        <p>{job.jobTitle} at {job.jobCompany}</p>
+      </div>
+    )
+  });
+  return (
+    <div className='work-experience-card-container'>
+      {card}
+    </div>
+  )
+
+  
 }
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
