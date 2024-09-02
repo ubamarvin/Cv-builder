@@ -26,9 +26,13 @@ function CvBuilderContainer() {
   const [education, setEducation] = 
   useState([{id: uuidv4(),
             institution: "PokemonSchool",
-            deegree: "PokemonMastah",
+            degree: "PokemonMastah",
             location: "Alabasta",
             graduationYear: new Date("2024-03-23")} ])
+
+  const [skills, setSkills] = useState([ {id: uuidv4(), 
+            killName: "For loops",
+              description: "proficient in the art of 4 loops"}])
 
   return (
     <div className="cv-builder-container">
@@ -41,6 +45,8 @@ function CvBuilderContainer() {
 
        education={education}
        setEducation={setEducation}
+
+       
       />
       <CvPreview
        fullNameText={fullNameText}
@@ -208,11 +214,114 @@ function AddExperienceButton({jobs, setJobs}){
 
 
 function EducationInfo({education, setEducation}) {
-  return (
-    <div className='education-info'>
-      <p>Education Info..</p>
+
+  
+  const handleInstitutionChange = (id, e) => {
+    const newEdu = education.map((edu) =>
+      edu.id === id ? { ...edu, institution: e.target.value} : edu)
+    setEducation(newEdu)
+  }
+    
+  
+  const handleDegreeChange = (id, e) => {
+    const newEdu = education.map((edu) => 
+      edu.id === id ? { ...edu, degree: e.target.value} : edu
+    )
+    setEducation(newEdu)
+  }
+
+
+  /*
+  // This is bad, leaves a null entry causing a nullpointer error
+  const handleDeleteJobCardClickDontUse = (id) => {
+    const newJobs = jobs.map((job) => {
+      return job.id === id ? null : job
+    })
+    setJobs(newJobs)
+  }
+  */
+
+  
+  const handleDeleteEducationCardClick = (id) => {
+    const newEdu = education.filter((edu) => edu.id !== id)
+    setEducation(newEdu)
+  }
+ 
+
+
+  const cards = education.map((edu) => {
+    return (
+      <div key={edu.id} className='education-info-form'>
+      <form>
+
+        <div>
+          <label htmlFor='institution'>Institution</label>
+          <input
+           type='text'
+           id='institution'
+           value={edu.institution}
+           onChange = {(e) => handleInstitutionChange(edu.id, e)}
+           
+           />
+        </div>
+
+        <div>
+          <label htmlFor='degree'>Degree earned</label>
+          <input
+           type='text'
+           id='degree'
+           value={edu.degree}
+           onChange = {(e) => handleDegreeChange(edu.id, e)}
+           />
+        </div>
+
+
+      </form>
+      
+      <button
+      type='button'
+      onClick={() => handleDeleteEducationCardClick(edu.id)}>
+        Delete
+        </button>
     </div>
   )
+  })
+ 
+  //what about keys? 
+  return (
+    <div className='education-info'>
+      <p>Education</p>
+      {cards}
+      <AddEducationButton
+      education={education}
+      setEducation={setEducation}/>
+      
+      
+    </div>
+  )
+
+}
+
+//refactor this with the addExbtn
+function AddEducationButton({education, setEducation}) {
+
+  function buttonClickHandler () {
+
+    const newEducation = [ ...education, {id: uuidv4,
+      institution: "",
+      degree: "",
+      graduationYear: new Date()}]
+      setEducation(newEducation)
+    }
+
+    return (
+      <button
+        type='button'
+        onClick={buttonClickHandler}
+      >
+        Add Education
+        </button>
+    )
 }
 
 
@@ -255,6 +364,7 @@ function EducationCard({education}) {
     return (
       <div key={edu.id} className='education-card'>
         <p>{edu.institution}</p>
+        <p>{edu.degree}</p>
       </div>
     )
   });
