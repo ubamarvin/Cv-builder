@@ -31,7 +31,7 @@ function CvBuilderContainer() {
             graduationYear: new Date("2024-03-23")} ])
 
   const [skills, setSkills] = useState([ {id: uuidv4(), 
-            killName: "For loops",
+            skillName: "For loops",
               description: "proficient in the art of 4 loops"}])
 
   return (
@@ -46,19 +46,24 @@ function CvBuilderContainer() {
        education={education}
        setEducation={setEducation}
 
-       
+       skills={skills}
+       setSkills={setSkills}
+
+
       />
       <CvPreview
        fullNameText={fullNameText}
        jobs = {jobs}
        education={education}
+       skills={skills}
+
       />
     </div>
   )
 
 }
 
-function CvInfo({fullNameText, setFullNameText, jobs, setJobs, education, setEducation}) {
+function CvInfo({fullNameText, setFullNameText, jobs, setJobs, education, setEducation, skills, setSkills}) {
 
   return (
     <div className="cv-info">
@@ -74,6 +79,11 @@ function CvInfo({fullNameText, setFullNameText, jobs, setJobs, education, setEdu
     <EducationInfo
      education={education}
      setEducation={setEducation}
+    />
+
+    <SkillsEdit
+     skills={skills}
+     setSkills={setSkills}
     />
 
     
@@ -324,10 +334,112 @@ function AddEducationButton({education, setEducation}) {
     )
 }
 
+function SkillsEdit({skills, setSkills}) {
+
+  const handleSkillNameChange = (id, e) => {
+    const newSkills = skills.map((skill) =>
+      skill.id === id ? { ...skill, skillName: e.target.value} : skill)
+    setSkills(newSkills)
+  }
+    
+  
+  const handleSkillDescriptionChange = (id, e) => {
+    const newSkills = skills.map((skill) => 
+      skill.id === id ? { ...skill, description: e.target.value} : skill
+    )
+    setSkills(newSkills)
+  }
+
+
+  /*
+  // This is bad, leaves a null entry causing a nullpointer error
+  const handleDeleteJobCardClickDontUse = (id) => {
+    const newJobs = jobs.map((job) => {
+      return job.id === id ? null : job
+    })
+    setJobs(newJobs)
+  }
+  */
+
+  
+  const handleDeleteSkillCardClick = (id) => {
+    const newSkills = skills.filter((skill) => skill.id !== id)
+    setSkills(newSkills)
+  }
+ 
+
+
+  const cards = skills.map((skill) => {
+    return (
+      <div key={skill.id} className='skill-info-form'>
+      <form>
+
+        <div>
+          <label htmlFor='skill-name'>SkillName</label>
+          <input
+           type='text'
+           id='skill-name'
+           value={skill.skillName}
+           onChange = {(e) => handleSkillNameChange(skill.id, e)}
+           
+           />
+        </div>
+
+        <div>
+          <label htmlFor='skill-description'>Skill Description</label>
+          <input
+           type='text'
+           id='skill-description'
+           value={skill.description}
+           onChange = {(e) => handleSkillDescriptionChange(skill.description, e)}
+           />
+        </div>
+
+
+      </form>
+      
+      <button
+      type='button'
+      onClick={() => handleDeleteSkillCardClick(skill.id)}>
+        Delete
+        </button>
+    </div>
+  )
+  })
+ 
+  //what about keys? 
+  return (
+    <div className='skills-info'>
+      <p>Skills</p>
+      {cards}
+      <AddSkillsButton
+      skills={skills}
+      setSkills={setSkills}/>
+      
+    </div>
+  )
+}
+
+function AddSkillsButton({skills, setSkills}) {
+  function handleButtonClick(){
+    const newSkills = [ ...skills, {id: uuidv4(), skillName: "", description: ""}]
+    setSkills(newSkills)
+  }
+
+  return (
+    <button
+    type='button'
+    onClick={()=> handleButtonClick()}
+    >
+    Add Skills
+    </button>
+  )
+}
 
 
 
-function CvPreview({fullNameText, jobs, education}) {
+
+function CvPreview({fullNameText, jobs, education, skills}) {
   
   return (
     <div className="cv-preview">
@@ -337,8 +449,23 @@ function CvPreview({fullNameText, jobs, education}) {
       <WorkExperienceCard jobs={jobs}/>
       <p>Education</p>
       <EducationCard education={education}/>
-
+      <p>Skills</p>
+      <SkillsCards skills={skills}/>
       
+    </div>
+  )
+}
+
+function SkillsCards({skills}) {
+  const cards = skills.map((skill) => 
+    <div key={skill.id} className='skill-card'>
+      <p>{skill.skillName} : {skill.description}</p>
+    </div>
+  )
+  
+  return (
+    <div className='skill-card-container'>
+      {cards}
     </div>
   )
 }
