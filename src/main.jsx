@@ -23,6 +23,13 @@ function CvBuilderContainer() {
   //jobs? Array of obsjects?
   const [jobs, setJobs] = useState([{id: uuidv4(), jobTitle: "burger", jobCompany: "crustykrab"}, {id: uuidv4(), jobTitle: "pizza", jobCompany : "PizzaHut"}])
 
+  const [education, setEducation] = 
+  useState([{id: uuidv4(),
+            institution: "PokemonSchool",
+            deegree: "PokemonMastah",
+            location: "Alabasta",
+            graduationYear: new Date("2024-03-23")} ])
+
   return (
     <div className="cv-builder-container">
       <CvInfo
@@ -31,17 +38,21 @@ function CvBuilderContainer() {
 
        jobs={jobs}
        setJobs={setJobs}
+
+       education={education}
+       setEducation={setEducation}
       />
       <CvPreview
        fullNameText={fullNameText}
        jobs = {jobs}
+       education={education}
       />
     </div>
   )
 
 }
 
-function CvInfo({fullNameText, setFullNameText, jobs, setJobs}) {
+function CvInfo({fullNameText, setFullNameText, jobs, setJobs, education, setEducation}) {
 
   return (
     <div className="cv-info">
@@ -54,7 +65,11 @@ function CvInfo({fullNameText, setFullNameText, jobs, setJobs}) {
      jobs={jobs}
      setJobs={setJobs}
     />
-    <EducationInfo/>
+    <EducationInfo
+     education={education}
+     setEducation={setEducation}
+    />
+
     
 
     </div>
@@ -166,17 +181,33 @@ function ExperienceInfo({jobs, setJobs}) {
     <div className='experience-info'>
       <p>Work Experience</p>
       {cards}
- 
+      <AddExperienceButton
+      jobs={jobs}
+      setJobs={setJobs}
+      />
       
       
     </div>
   )
 }
 
+function AddExperienceButton({jobs, setJobs}){
+  function buttonClickHandler() {
+    const newJobs = [...jobs, {id: uuidv4(), jobTitle: "", jobCompany: ""}]
+    setJobs(newJobs)
+  }
+  return (
+    <button
+     onClick={()=> buttonClickHandler() }
+    >
+      Add Experience</button>
+  )
+}
 
 
 
-function EducationInfo() {
+
+function EducationInfo({education, setEducation}) {
   return (
     <div className='education-info'>
       <p>Education Info..</p>
@@ -187,7 +218,7 @@ function EducationInfo() {
 
 
 
-function CvPreview({fullNameText, jobs}) {
+function CvPreview({fullNameText, jobs, education}) {
   
   return (
     <div className="cv-preview">
@@ -195,6 +226,8 @@ function CvPreview({fullNameText, jobs}) {
       <p>Your name is: <span>{fullNameText}</span></p>
       <p>Work Experience:</p>
       <WorkExperienceCard jobs={jobs}/>
+      <p>Education</p>
+      <EducationCard education={education}/>
 
       
     </div>
@@ -214,9 +247,22 @@ function WorkExperienceCard({jobs}) {
     <div className='work-experience-card-container'>
       {card}
     </div>
-  )
+  )  
+}
 
-  
+function EducationCard({education}) {
+  const card = education.map((edu) => {
+    return (
+      <div key={edu.id} className='education-card'>
+        <p>{edu.institution}</p>
+      </div>
+    )
+  });
+  return (
+    <div className='education-card-container'>
+      {card}
+    </div>
+  )
 }
 
 
