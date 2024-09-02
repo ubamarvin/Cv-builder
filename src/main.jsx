@@ -3,17 +3,30 @@ import { createRoot } from 'react-dom/client'
 import { useState} from "react"
 import {v4 as uuidv4} from "uuid"
 
+import Header from "./components/Header/Header"
+import CvBuilderContainer from './components/CvBuilderContainer/CvBuilderContainer'
+
+
+import CvInfo from './components/CvBuilderContainer/CvEdit/CvEdit'
+import CvPreview from './components/CvBuilderContainer/CvPreview/CvPreview'
+import PersonalInfo from './components/CvBuilderContainer/CvEdit/PersonalEdit/PersonalEdit'
+import ExperienceInfo from './components/CvBuilderContainer/CvEdit/ExperienceEdit/ExperienceEdit'
+import EducationInfo from './components/CvBuilderContainer/CvEdit/EducationEdit/EducationInfo'
+import SkillsEdit from './components/CvBuilderContainer/CvEdit/SkillsEdit/SkillsEdit'
+
+
 import "./index.css";
 
-function Header() {
+//function Header() {
+//
+//  return (
+//    <div className="header">
+//      <p>This is the Header</p>
+//    </div>
+//  )
+//}
 
-  return (
-    <div className="header">
-      <p>This is the Header</p>
-    </div>
-  )
-}
-
+/*
 function CvBuilderContainer() {
   //tabs for switching beetween inputs are buttons
 
@@ -61,8 +74,8 @@ function CvBuilderContainer() {
     </div>
   )
 
-}
-
+} // Comped
+/*
 function CvInfo({fullNameText, setFullNameText, jobs, setJobs, education, setEducation, skills, setSkills}) {
 
   return (
@@ -90,8 +103,9 @@ function CvInfo({fullNameText, setFullNameText, jobs, setJobs, education, setEdu
 
     </div>
   )
-}
+}// comped
 
+/*
 function PersonalInfo({fullNameText, setFullNameText}) {
 
   return (
@@ -123,10 +137,11 @@ function PersonalInfo({fullNameText, setFullNameText}) {
       </form>
     </div>
   )
-}
+} */ // comped and in tree
 
 // A button that appends another Experience Info
 // by adding a empty object to the jobs state
+/*
 function ExperienceInfo({jobs, setJobs}) {
 
   const handleJobTitleChange = (id, e) => {
@@ -142,13 +157,7 @@ function ExperienceInfo({jobs, setJobs}) {
     setJobs(newJobs)
   }
 
-  // This is bad, leaves a null entry causing a nullpointer error
-  const handleDeleteJobCardClickDontUse = (id) => {
-    const newJobs = jobs.map((job) => {
-      return job.id === id ? null : job
-    })
-    setJobs(newJobs)
-  }
+ 
   const handleDeleteJobCardClick = (id) => {
     const newJobs = jobs.filter((job) => job.id !== id)
     setJobs(newJobs)
@@ -205,8 +214,9 @@ function ExperienceInfo({jobs, setJobs}) {
       
     </div>
   )
-}
+}*/// comped
 
+/*
 function AddExperienceButton({jobs, setJobs}){
   function buttonClickHandler() {
     const newJobs = [...jobs, {id: uuidv4(), jobTitle: "", jobCompany: ""}]
@@ -218,11 +228,11 @@ function AddExperienceButton({jobs, setJobs}){
     >
       Add Experience</button>
   )
-}
+}*/// comped in tree
 
 
 
-
+/*
 function EducationInfo({education, setEducation}) {
 
   
@@ -249,7 +259,7 @@ function EducationInfo({education, setEducation}) {
     })
     setJobs(newJobs)
   }
-  */
+  
 
   
   const handleDeleteEducationCardClick = (id) => {
@@ -310,8 +320,9 @@ function EducationInfo({education, setEducation}) {
     </div>
   )
 
-}
+}*//// comped
 
+/*
 //refactor this with the addExbtn
 function AddEducationButton({education, setEducation}) {
 
@@ -332,8 +343,10 @@ function AddEducationButton({education, setEducation}) {
         Add Education
         </button>
     )
-}
+}*///comped
 
+
+/*
 function SkillsEdit({skills, setSkills}) {
 
   const handleSkillNameChange = (id, e) => {
@@ -360,6 +373,7 @@ function SkillsEdit({skills, setSkills}) {
     setJobs(newJobs)
   }
   */
+ /*
 
   
   const handleDeleteSkillCardClick = (id) => {
@@ -391,7 +405,7 @@ function SkillsEdit({skills, setSkills}) {
            type='text'
            id='skill-description'
            value={skill.description}
-           onChange = {(e) => handleSkillDescriptionChange(skill.description, e)}
+           onChange = {(e) => handleSkillDescriptionChange(skill.id, e)}
            />
         </div>
 
@@ -418,8 +432,9 @@ function SkillsEdit({skills, setSkills}) {
       
     </div>
   )
-}
+}*/
 
+/*
 function AddSkillsButton({skills, setSkills}) {
   function handleButtonClick(){
     const newSkills = [ ...skills, {id: uuidv4(), skillName: "", description: ""}]
@@ -434,11 +449,11 @@ function AddSkillsButton({skills, setSkills}) {
     Add Skills
     </button>
   )
-}
+}*/
 
 
 
-
+/*
 function CvPreview({fullNameText, jobs, education, skills}) {
   
   return (
@@ -455,7 +470,8 @@ function CvPreview({fullNameText, jobs, education, skills}) {
     </div>
   )
 }
-
+  */
+/*
 function SkillsCards({skills}) {
   const cards = skills.map((skill) => 
     <div key={skill.id} className='skill-card'>
@@ -469,7 +485,8 @@ function SkillsCards({skills}) {
     </div>
   )
 }
-
+*/
+/*
 function WorkExperienceCard({jobs}) {
 
     const card = jobs.map((job)=> {
@@ -485,7 +502,7 @@ function WorkExperienceCard({jobs}) {
     </div>
   )  
 }
-
+/*
 function EducationCard({education}) {
   const card = education.map((edu) => {
     return (
@@ -501,6 +518,7 @@ function EducationCard({education}) {
     </div>
   )
 }
+  */
 
 
 createRoot(document.getElementById('root')).render(
